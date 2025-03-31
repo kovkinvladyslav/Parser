@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <climits>
+#include <vector>
 
 class Range {
 public:
