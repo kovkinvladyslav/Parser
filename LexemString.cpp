@@ -18,7 +18,7 @@ void LexemString::clear()
 void LexemString::Output()
 {
 	if (lexemString.empty()) {
-		std::printf("\LA scan encountered no lexems.\n");
+		std::printf("\nLA scan encountered no lexems.\n");
 	}
 	else {
 		std::printf("\nLexem String:\n");
