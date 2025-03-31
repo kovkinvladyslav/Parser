@@ -5,7 +5,7 @@ void LexemString::add(Lexem newLexem)
 	lexemString.push_back(newLexem);
 }
 
-const std::vector<Lexem>& LexemString::get()
+const std::vector<Lexem>& LexemString::get() const 
 {
 	return lexemString;
 }
