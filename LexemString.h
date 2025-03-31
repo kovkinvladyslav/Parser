@@ -12,8 +12,7 @@ class LexemString {
 	std::vector<Lexem> lexemString;
 public:
 	void add(Lexem newLexem);
-	const std::vector<Lexem>& get();
+	const std::vector<Lexem>& get() const;
 	void clear();
 	void Output();
-
 };

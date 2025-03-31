@@ -1,7 +1,7 @@
 .PHONY: all clean build
 
 CXX := g++
-CXXFLAGS := -Wall -Wextra -std=c++17 -O2
+CXXFLAGS := -Wall -Wextra -lstdc++
 
 TARGET := parser
 
@@ -19,5 +19,5 @@ $(TARGET): $(OBJ)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(TARGET)
 
