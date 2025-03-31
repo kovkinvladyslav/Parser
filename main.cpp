@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
-
+#include <error.h>
+#include "Lexer.h"
+#include "Table.h"
+#include "Attributes.h"
+#include "LexemString.h"
 
 int main(int argc, char** argv){
 
@@ -10,6 +14,16 @@ int main(int argc, char** argv){
     }
 
     std::string Test = argv[1];
+    Tables LexTable;
+    Attributes attributes;
+    Lexer lexer(LexTable, attributes);
+    lexer.scan(Test);
+    LexemString scan_result = lexer.GetScanResult();
+    scan_result.Output();
+    LexTable.OutputAllTables();
 
 
+
+
+    
 }
