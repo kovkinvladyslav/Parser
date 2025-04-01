@@ -120,6 +120,8 @@ Node *Parser::procedure(){
     if(TS.code != tables.Keywords.get("PROCEDURE")){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected 'PROCEDURE' keyword");
         procedure_node->add_child(new Node("<error>"));
+        SCN();
+        return procedure_node;
     } else {
         procedure_node->add_child(new Node(TS.Lexem));
     }
