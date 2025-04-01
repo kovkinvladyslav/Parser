@@ -35,9 +35,9 @@ void output_tree_recursive(Node *root, std::string prefix = "", bool isLast = fa
 
     std::cout << root->get_value() << std::endl;
     std::vector<Node *> children = root->get_children();
-
-    for(int i = 0; i < children.size(); i++){
-        output_tree_recursive(children[i], prefix, i >= children.size());
+    int children_N = static_cast<int>(children.size());
+    for(int i = 0; i < children_N; i++){
+        output_tree_recursive(children[i], prefix, i >= children_N);
     }
 }
 
