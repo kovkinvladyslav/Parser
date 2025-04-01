@@ -1,18 +1,12 @@
 PROGRAM TEST1 ;
-(* comment
--- ++ multi line \\
-*)
+
 PROCEDURE PROC1 (
 	VAR1, VAR2, VAR3: BLOCKFLOAT, SIGNAL, INTEGER; 
 ); 
-PROCEDURE PROC2
+PROCEDURE PROC2;
 PROCEDURE PROC3 ( 
-)
+);
+
 BEGIN
 END ;
-(**) (*         *) (*
-
-
-*)
-(*((())))))()((*) (*random words1121*)
 
