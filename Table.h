@@ -19,7 +19,7 @@ protected:
 	const std::vector<std::string> reservedFields;
 	void fill_table();
 public:
-	int get(const std::string& token);
+	int get(const std::string& token) const;
 	int append(const std::string& token);
 	Table(Range range, const std::vector<std::string>& reservedFieldList);
 	void OutputTable();
