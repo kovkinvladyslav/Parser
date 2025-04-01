@@ -110,7 +110,6 @@ Node *Parser::procedure_declarations() {
     } else {
         while(TS.code != tables.Keywords.get("BEGIN")){
             procedure_declarations_node->add_child(procedure());
-            SCN();
         }   
         return procedure_declarations_node;
     }
@@ -133,6 +132,7 @@ Node *Parser::procedure(){
         procedure_node->add_child(new Node("<error>"));
     } else {
         procedure_node->add_child(new Node(";"));
+        SCN();
     }
     return procedure_node;
 }
