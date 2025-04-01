@@ -197,7 +197,6 @@ Node *Parser::declaration(){
 Node *Parser::identifiers_list(){
     Node *identifiers_list = new Node ("<identifiers-list>");
     identifiers_list->add_child(variable_identifier());
-    SCN();
     while(TS.code == tables.Delimiters.get(",")){
         identifiers_list->add_child(new Node(TS.Lexem));
         SCN();
@@ -213,6 +212,7 @@ Node *Parser::variable_identifier(){
     if(identifier_node == nullptr){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Variable identifier is explected to be an identifier");
         variable_identifier_node->add_child(new Node("<error>"));
+        return variable_identifier_node;
     } else {
         variable_identifier_node->add_child(identifier_node);
     }
@@ -238,6 +238,8 @@ Node *Parser::attribute(){
     if(identifier_node == nullptr && TS.code > 1006){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Attribute name is explected to be type");
         attribute_node->add_child(new Node("<error>"));
+        SCN();
+        return attribute_node;
     } else {
         attribute_node->add_child(identifier_node);
     }
