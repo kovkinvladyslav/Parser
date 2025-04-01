@@ -5,7 +5,7 @@
 #include "Table.h"
 #include "Attributes.h"
 #include "LexemString.h"
-
+#include "parser.h"
 int main(int argc, char** argv){
 
     if(argc != 2){
@@ -21,7 +21,8 @@ int main(int argc, char** argv){
     LexemString scan_result = lexer.GetScanResult();
     scan_result.Output();
     LexTable.OutputAllTables();
-
+    Parser parser(scan_result, LexTable);
+    parser.generate_tree()->output_tree();
 
 
 
