@@ -1,18 +1,19 @@
 #include "LexemString.h"
 #include "tree.h"
 #include <vector>
-
-
+#include "Table.h"
+#include "Error.h"
 
 class Parser{
 private:
-    int TS;
+    Lexem TS;
     const LexemString& lexems; 
+    const Tables &tables;
     int i;
 public:
-    Parser(const LexemString &Lexem_String);
+    Parser(const LexemString &Lexem_String, const Tables &tables);
     void SCN();
-    Tree *generate_tree(LexemString LexemString);
+    Tree *generate_tree();
     Node *signal_program();
     Node *program();
     Node *procedure_identifier();
