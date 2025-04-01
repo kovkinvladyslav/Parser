@@ -42,5 +42,6 @@ void output_tree_recursive(Node *root, std::string prefix = "", bool isLast = fa
 }
 
 void Tree::output_tree(){
+    printf("\nTree:\n");
     output_tree_recursive(root);
 }
