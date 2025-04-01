@@ -73,7 +73,6 @@ Node *Parser::identifier(){
 Node *Parser::block(){
     Node *block = new Node("<block>");
     block->add_child(declarations());
-    SCN();
     if(TS.code != tables.Keywords.get("BEGIN")){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected 'BEGIN' keyword");
         block->add_child(new Node("<error>"));
@@ -83,7 +82,6 @@ Node *Parser::block(){
         SCN();
     }
     block->add_child(statements_list());
-    SCN();
     if(TS.code != tables.Keywords.get("END")){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected 'END' keyword");
         block->add_child(new Node("<error>"));
@@ -101,24 +99,28 @@ Node *Parser::declarations(){
 
 Node *Parser::procedure_declarations() {
     Node *procedure_declarations_node = new Node ("<procedure_declarations>");
-    if (TS.code != tables.Keywords.get("PROCEDURE")) {
-        if(procedure_declarations_node->get_children().size() == 0){
-            return nullptr;
-        }
+    if(TS.code == tables.Keywords.get("BEGIN")){
+        procedure_declarations_node->add_child(empty());
+        return procedure_declarations_node;
     }
-    
-    procedure_declarations_node->add_child(procedure());
-    while(TS.code == tables.Delimiters.get(";")){
-        SCN();
-        procedure_declarations_node->add_child(procedure());
-    }   
-    return procedure_declarations_node;
+    if (TS.code != tables.Keywords.get("PROCEDURE")) {
+        errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected 'PROCEDURE' keyword");
+        procedure_declarations_node->add_child(new Node("<error>"));
+        return procedure_declarations_node;
+    } else {
+        while(TS.code != tables.Keywords.get("BEGIN")){
+            procedure_declarations_node->add_child(procedure());
+            SCN();
+        }   
+        return procedure_declarations_node;
+    }
 }
 
 Node *Parser::procedure(){
     Node *procedure_node = new Node ("<procedure>");
     if(TS.code != tables.Keywords.get("PROCEDURE")){
-        return nullptr;
+        errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected 'PROCEDURE' keyword");
+        procedure_node->add_child(new Node("<error>"));
     } else {
         procedure_node->add_child(new Node(TS.Lexem));
     }
@@ -126,8 +128,6 @@ Node *Parser::procedure(){
     procedure_node->add_child(procedure_identifier());
     SCN();
     procedure_node->add_child(parameters_list());
-    SCN();
-    
     if(TS.code != tables.Delimiters.get(";")){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected ending ';' after procedure declaration");
         procedure_node->add_child(new Node("<error>"));
@@ -140,29 +140,32 @@ Node *Parser::procedure(){
 Node *Parser::parameters_list(){
     Node *parameters_list_node = new Node ("<parameters-list>");
     if(TS.code != tables.Delimiters.get("(")){
-        return nullptr;
+        parameters_list_node->add_child(empty());
+        return parameters_list_node;
     } else {
         parameters_list_node->add_child(new Node(TS.Lexem));
     }
     SCN();
     parameters_list_node->add_child(declarations_list());
-    SCN();
     if(TS.code != tables.Delimiters.get(")")){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected '(' after parameters list");
         parameters_list_node->add_child(new Node("<error>"));
     } else {
         parameters_list_node->add_child(new Node(TS.Lexem));
     }
+    SCN();
     return parameters_list_node;
-
 }
 
 Node *Parser::declarations_list(){
     Node *declaration_list_node = new Node ("<declarations-list>");
-    declaration_list_node->add_child(declaration());
-    while(TS.code == tables.Delimiters.get(";")){
-        SCN();
+    if(TS.code == tables.Delimiters.get(")")){
+        declaration_list_node->add_child(empty());
+        return declaration_list_node;
+    }
+    while(TS.code != tables.Delimiters.get(")")){
         declaration_list_node->add_child(declaration());
+        SCN();
     }
     return declaration_list_node;
 }
@@ -170,7 +173,6 @@ Node *Parser::declarations_list(){
 Node *Parser::declaration(){
     Node *declaration_node = new Node ("<declaration>");
     declaration_node->add_child(identifiers_list());
-    SCN();
     if(TS.code != tables.Delimiters.get(":")){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Expected ':' between variables identifiers and attributes");
         declaration_node->add_child(new Node("<error>"));
@@ -198,6 +200,7 @@ Node *Parser::identifiers_list(){
         identifiers_list->add_child(new Node(TS.Lexem));
         SCN();
         identifiers_list->add_child(variable_identifier());
+        SCN();
     }
     return identifiers_list;
 }
@@ -216,18 +219,19 @@ Node *Parser::variable_identifier(){
 
 Node *Parser::attributes_list(){
     Node *attributes_list = new Node ("<attributes-list>");
-    attributes_list->add_child(variable_identifier());
+    attributes_list->add_child(attribute());
     SCN();
     while(TS.code == tables.Delimiters.get(",")){
         attributes_list->add_child(new Node(TS.Lexem));
         SCN();
-        attributes_list->add_child(variable_identifier());
+        attributes_list->add_child(attribute());
+        SCN();
     }
     return attributes_list;
 }
 
 Node *Parser::attribute(){
-    Node* attribute_node = new Node ("<variable-identifier>");
+    Node* attribute_node = new Node ("<attribute>");
     Node *identifier_node = identifier();
     if(identifier_node == nullptr && TS.code > 1006){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Attribute name is explected to be type");
@@ -239,7 +243,7 @@ Node *Parser::attribute(){
 }
 
 Node *Parser::procedure_identifier(){
-    Node *procedure_identifier = new Node ("<variable-identifier>");
+    Node *procedure_identifier = new Node ("<procedure-identifier>");
     Node *identifier_node = identifier();
     if(identifier_node == nullptr){
         errorLogger.logError("Parser", TS.nline, TS.ncol, "Procedure identifier is explected to be an identifier");
@@ -252,5 +256,11 @@ Node *Parser::procedure_identifier(){
 
 Node *Parser::statements_list(){
     Node *statements_list_node = new Node("<statements-list>");
+    statements_list_node->add_child(empty());
     return statements_list_node;
+}
+
+Node *Parser::empty(){
+    Node *empty = new Node("<empty>");
+    return empty;
 }
