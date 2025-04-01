@@ -5,24 +5,17 @@ class Node{
     std::vector<Node*> children;
     std::string value;
     public:
-    Node(std::string new_value){
-        value = new_value;
-    }
-    void add_child(Node *newNode){
-        children.push_back(newNode);
-    }
-    void set_value(std::string new_value){
-        value = new_value;
-    }
+    Node(std::string new_value);
+    void add_child(Node *newNode);
+    void set_value(std::string new_value);
+    std::string get_value() const;
+    const std::vector<Node*> &get_children() const;
 };
 
 class Tree{
     Node* root;
     public:
-    Tree(){
-        root = nullptr;
-    }
-    void set_root(Node *root_node){
-        root = root_node;
-    }
+    Tree(Node *root_node);
+
+    void output_tree();
 };

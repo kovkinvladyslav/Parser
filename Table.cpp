@@ -8,7 +8,7 @@ void Table::fill_table()
 	}
 }
 
-int Table::get(const std::string& token)
+int Table::get(const std::string& token) const
 {
 	auto Entry = table.find(token);
 	if (Entry != table.end()) {
