@@ -1,4 +1,4 @@
-﻿#include "Lexer.h"
+﻿#include "../headers/Lexer.h"
 
 
 bool Lexer::OpenFile(const std::string& filename)

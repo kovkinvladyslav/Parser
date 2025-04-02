@@ -1,4 +1,4 @@
-#include "tree.h"
+#include "../headers/tree.h"
 #include <iostream>
 
 Tree::Tree(Node *root_node)

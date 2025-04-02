@@ -1,23 +1,23 @@
 .PHONY: all clean build
 
 CXX := g++
-CXXFLAGS := -Wall -Wextra -lstdc++
+CXXFLAGS := -Wall -Wextra -Iheaders -lstdc++
 
 TARGET := parser
 
-SRC := $(wildcard *.cpp)
-OBJ := $(SRC:%.cpp=%.o)
+SRC := $(wildcard source/*.cpp)
+OBJ := $(SRC:source/%.cpp=build/%.o)
 
-all: build clean
+all: build $(TARGET)
 
-build: $(TARGET)
+build:
+	mkdir -p build
 
 $(TARGET): $(OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-%.o: %.cpp
+build/%.o: source/%.cpp | build
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) $(TARGET)
-
+	rm -rf build $(TARGET)

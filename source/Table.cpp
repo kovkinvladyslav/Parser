@@ -1,4 +1,4 @@
-﻿#include "Table.h"
+﻿#include "../headers/Table.h"
 #include <algorithm>
 
 void Table::fill_table()

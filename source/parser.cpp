@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "../headers/parser.h"
 
 Parser::Parser(const LexemString &Lexem_String, const Tables &tables)
     : lexems(Lexem_String), tables(tables), i(0)

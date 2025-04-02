@@ -1,4 +1,4 @@
-#include "Attributes.h"
+#include "../headers/Attributes.h"
 
 int Attributes::getCategory(unsigned char symbol)
 {

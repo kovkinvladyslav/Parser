@@ -1,4 +1,4 @@
-#include "LexemString.h"
+#include "../headers/LexemString.h"
 
 void LexemString::add(Lexem newLexem)
 {
